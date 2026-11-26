@@ -383,7 +383,7 @@ function setLens(l){lens=l;document.querySelectorAll('#lenses button').forEach(b
 $('lenses').innerHTML=Object.entries(LENS).map(([k,v])=>`<button data-l="${k}">${v.label}</button>`).join('');
 $('lenses').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setLens(b.dataset.l)});
 const person=on=>`<svg viewBox="0 0 12 20" class="${on?'on':''}"><circle cx="6" cy="4" r="3.2"/><path d="M1 19v-6a5 5 0 0 1 10 0v6z"/></svg>`;
-function cmp(lab,v,ref,f,col){const m=Math.max(v,ref)*1.1;return`<div class="cmp"><div class="l"><b>${lab}</b><span>${f(v)} · Hamburg ${f(ref)}</span></div><div class="t"><i style="width:${v/m*100}%;background:${col}"></i></div><div class="t"><i style="width:${ref/m*100}%;background:#6b7891"></i></div></div>`}
+function cmp(lab,v,ref,f,col){const m=Math.max(v,ref)*1.1;return`<div class="cmp"><div class="l"><b>${lab}</b><span>${f(v)} · Hamburg ${f(ref)}</span></div><div class="t"><i style="width:${w(v)}%;background:${col}"></i></div><div class="t"><i style="width:${w(ref)}%;background:#6b7891"></i></div></div>`}
 const ROWS=[['Fläche','area',v=>fmtD(v)+' km²'],['Dichte','dens',null],['Einkommen','inc',null],['Kinder unter 18','u18',null],['65 Jahre und älter','o65',null],['Einpersonenhaushalte','hh1',null],['Wohnfläche je Einwohner','wfl',null],['Eigentumswohnungen','etw',null],['Pkw je 1.000 Einwohner','pkw',null],['Wachstum 2024','bil',null]];
 function stBlock(st,hex,b){const T=TOUR[st.n]||[],d=st.d,U=uniqSt();
  const rk=k=>{const l=U.filter(t=>t.d[k]!=null).sort((x,y)=>y.d[k]-x.d[k]);return[l.findIndex(t=>t.d===d)+1,l.length]};
@@ -399,7 +399,7 @@ function showBz(code,hex){const b=BZ[code],sh=b.pop/HH.pop,on=Math.round(sh*20),
  <p class="sub">Bezirk der Freien und Hansestadt Hamburg</p>
  <div class="stats"><div><b>${fmtK(b.pop)}</b><span>Einwohner</span></div><div><b>${fmtN(b.dens)}</b><span>pro km²</span></div><div><b>${fmtN(b.area)}</b><span>km² Fläche</span></div></div>
  <h3>BÜRGER</h3><p class="row"><span>${esc(b.name)}</span><b>rund jeder ${Math.round(1/sh)}. Hamburger</b></p><div class="people" style="--c:${b.col}">${[...Array(20)].map((_,i)=>person(i<on)).join('')}</div>
- <h3>VERGLEICH MIT HAMBURG</h3>${cmp('Dichte',b.dens,HH.dens,v=>fmtN(v)+'/km²',b.col)}${cmp('Einkommen je Steuerpflichtigen (2021)',b.d.inc,HH.d.inc,v=>fmtN(v)+' €',b.col)}${cmp('Wahlbeteiligung 2024',b.turn,HH.turn,v=>fmtD(v)+' %',b.col)}${cmp('Kinder unter 18',b.d.u18,HH.d.u18,v=>fmtD(v)+' %',b.col)}${cmp('Wachstum 2024',Math.max(0,b.bil),Math.max(0,HH.bil),v=>sg(v),b.col)}
+ <h3>VERGLEICH MIT HAMBURG</h3>${cmp('Dichte',b.dens,HH.dens,v=>fmtN(v)+'/km²',b.col)}${cmp('Einkommen je Steuerpflichtigen (2021)',b.d.inc,HH.d.inc,v=>fmtN(v)+' €',b.col)}${cmp('Wahlbeteiligung 2024',b.turn,HH.turn,v=>fmtD(v)+' %',b.col)}${cmp('Kinder unter 18',b.d.u18,HH.d.u18,v=>fmtD(v)+' %',b.col)}${cmp('Wachstum 2024',b.bil,HH.bil,v=>sg(v),b.col)}
  ${wahlBlock(code)}
  <h3>DISTRIKTE</h3>${b.dist.map(d=>`<div class="dist"><i style="--c:${b.col}">${d[0][0]}</i><div><b>${esc(d[0])}</b><span>${esc(d[1])}</span></div></div>`).join('')}
  <p class="src">Statistikamt Nord: Hamburger Stadtteil-Profile, Berichtsjahr 2024 (Bevölkerung 31.12.2024, Einkommen 2021) · Bezirksversammlungswahl 2024. Stadtteil-Lage und Gelände auf der Karte sind Näherungen.</p>`;panel.classList.add('open')}
