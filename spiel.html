@@ -292,7 +292,7 @@ function lensRange(l){const L=LENS[l];if(L.bz){const v=Object.values(BZ).map(b=>
  const v=uniqSt().map(t=>t.d[L.k]).filter(x=>x!=null).sort((a,b)=>a-b);if(L.sqrt)return[v[0],v[v.length-1],0,0];
  const lo=v[Math.floor(v.length*.05)],hi=v[Math.ceil(v.length*.95)-1];return[lo,hi,lo>v[0],hi<v[v.length-1]]}
 const lensCache={};
-function renderLens(l){if(lensCache[l])return lensCache[l];const o=document.createElement('canvas');o.width=(X1-X0)*S;o.height=(Y1-Y0)*S;const c=o.getContext('2d');const px=h=>[(h.x-X0)*S,(h.y-Y0)*S];
+function renderLens(l){if(lensCache[l])return lensCache[l];for(const k in lensCache)delete lensCache[k];const o=document.createElement('canvas');o.width=(X1-X0)*S;o.height=(Y1-Y0)*S;const c=o.getContext('2d');const px=h=>[(h.x-X0)*S,(h.y-Y0)*S];
  const L=LENS[l];let col;
  if(l==='bezirk')col=h=>BZ[h.bz].col;
  else if(l==='tour')col=h=>h.st&&TOUR[h.st.n]?'rgba(0,0,0,0)':'rgba(8,14,28,.62)';
